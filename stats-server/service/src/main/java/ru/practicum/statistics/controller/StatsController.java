@@ -28,10 +28,10 @@ public class StatsController {
     public List<ViewStats> getStats(
             @RequestParam String start,
             @RequestParam String end,
-            @RequestParam List<String> uris,
+            @RequestParam (required = false) List<String> uris,
             @RequestParam (defaultValue = "false") Boolean unique
     ) {
-        log.info("Request to get stats for \"{}\".", uris.get(0));
+        log.info("Request to get stats for \"{}\".", uris);
         return statsService.getStats(start, end, uris, unique);
     }
 }

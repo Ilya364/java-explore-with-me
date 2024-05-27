@@ -10,10 +10,7 @@ import ru.practicum.statistics.repository.StatsRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +30,7 @@ public class StatsServiceImpl implements StatsService {
         LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         List<Hit> hits;
-        if (uris.get(0).equals("/events")) {
+        if (uris == null) {
             hits = repository.findAllByTimestampBetween(startTime, endTime);
         } else {
             hits = repository.findAllByTimestampBetweenAndUriIn(startTime, endTime, uris);
@@ -66,6 +63,8 @@ public class StatsServiceImpl implements StatsService {
             viewStats.incHits();
             stats.put(hit.getUri(), viewStats);
         }
-        return new ArrayList<>(stats.values());
+        List<ViewStats> statsList = new ArrayList<>(stats.values());
+        statsList.sort(Comparator.comparing(ViewStats::getHits).reversed());
+        return statsList;
     }
 }
