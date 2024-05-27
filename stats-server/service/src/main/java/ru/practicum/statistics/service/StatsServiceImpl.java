@@ -52,7 +52,7 @@ public class StatsServiceImpl implements StatsService {
                 .values()
         );
     }
-    
+
     private List<ViewStats> buildViewStats(List<Hit> hits) {
         Map<String, ViewStats> stats = new HashMap<>();
         for (Hit hit : hits) {
