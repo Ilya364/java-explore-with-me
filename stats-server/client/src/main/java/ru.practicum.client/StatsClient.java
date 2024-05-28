@@ -12,7 +12,6 @@ import ru.practicum.dto.EndpointHit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 public class StatsClient {
     private final RestTemplate rest;
@@ -28,15 +27,13 @@ public class StatsClient {
     ) throws JsonProcessingException {
         EndpointHit endpointHit = buildEndpointHit(app, uri, ip, timestamp);
         String body = buildBody(endpointHit);
-        return makeAndSendRequest(HttpMethod.POST, POST_HIT_PATH, null, body);
+        return makeAndSendRequest(HttpMethod.POST, POST_HIT_PATH, body);
     }
 
-    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        Map<String, Object> parameters = buildParameters(start, end, uris, unique);
+    public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         return makeAndSendRequest(
                 HttpMethod.GET,
-                GET_STATS_PATH + "?start={start}&end={end}&uris={uris}&unique={unique}",
-                parameters,
+                GET_STATS_PATH + buildParameters(start, end, uris, unique),
                 null);
     }
 
@@ -54,31 +51,30 @@ public class StatsClient {
         return mapper.writeValueAsString(endpointHit);
     }
 
-    private Map<String, Object> buildParameters(
-            LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique
+    private String buildParameters(
+            LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique
     ) {
+        StringBuilder builder = new StringBuilder("?start=");
         String startStr = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String endStr = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return Map.of(
-                "start", startStr,
-                "end", endStr,
-                "uris", uris,
-                "unique", unique
-                );
+        builder.append(startStr).append("&end=").append(endStr);
+        for (String uri : uris) {
+            builder.append("&uri=").append(uri);
+        }
+        if (unique != null) {
+            builder.append("&unique=").append(unique);
+        }
+        return builder.toString();
     }
 
     private <T> ResponseEntity<Object> makeAndSendRequest(
-            HttpMethod method, String path, @Nullable Map<String, Object> parameters, @Nullable T body
+            HttpMethod method, String path, @Nullable T body
     ) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
 
         ResponseEntity<Object> shareitServerResponse;
         try {
-            if (parameters != null) {
-                shareitServerResponse = rest.exchange(path, method, requestEntity, Object.class, parameters);
-            } else {
-                shareitServerResponse = rest.exchange(path, method, requestEntity, Object.class);
-            }
+            shareitServerResponse = rest.exchange(path, method, requestEntity, Object.class);
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }
