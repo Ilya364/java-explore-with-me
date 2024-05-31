@@ -10,13 +10,12 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class EndpointHit {
-    @JsonProperty("ip")
+    //@Value("${datetime.pattern}")
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private String ip;
-    @JsonProperty("uri")
     private String uri;
-    @JsonProperty("app")
     private String app;
     @JsonProperty("timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_PATTERN)
     private LocalDateTime hitTimestamp;
 }

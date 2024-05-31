@@ -3,24 +3,27 @@ package ru.practicum.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.dto.EndpointHit;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class StatsClient {
     private final RestTemplate rest;
-    private static final String POST_HIT_PATH = "http://localhost:9090/hit";
-    private static final String GET_STATS_PATH = "http://localhost:9090/stats";
-
-    public StatsClient(RestTemplate rest) {
-        this.rest = rest;
-    }
+    //@Value("${datetime.pattern}")
+    private String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    //@Value("${stats.service.host}")
+    private final String HOST = "localhost";
+    //@Value("${stats.service.port}")
+    private final String PORT = "9090";
+    private final String POST_HIT_PATH = "http://" + HOST + ":" + PORT + "/hit";
+    private final String GET_STATS_PATH = "http://" + HOST + ":" + PORT + "/stats";
 
     public ResponseEntity<Object> postHit(
             String app, String uri, String ip, LocalDateTime timestamp
@@ -55,8 +58,8 @@ public class StatsClient {
             LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique
     ) {
         StringBuilder builder = new StringBuilder("?start=");
-        String startStr = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endStr = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String startStr = start.format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
+        String endStr = end.format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
         builder.append(startStr).append("&end=").append(endStr);
         for (String uri : uris) {
             builder.append("&uri=").append(uri);

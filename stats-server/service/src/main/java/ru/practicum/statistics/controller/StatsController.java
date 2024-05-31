@@ -2,12 +2,14 @@ package ru.practicum.statistics.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.EndpointHit;
 import ru.practicum.dto.ViewStats;
 import ru.practicum.statistics.service.StatsService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -15,6 +17,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatsController {
     private final StatsService statsService;
+    private final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+/*    @Autowired
+    public StatsController(
+            StatsService statsService,
+            @Value("${datetime.pattern}") String DATE_TIME_PATTERN) {
+        this.statsService = statsService;
+        this.DATE_TIME_PATTERN = DATE_TIME_PATTERN;
+    }*/
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
@@ -26,8 +37,8 @@ public class StatsController {
 
     @GetMapping("/stats")
     public List<ViewStats> getStats(
-            @RequestParam String start,
-            @RequestParam String end,
+            @DateTimeFormat(pattern = DATE_TIME_PATTERN) @RequestParam LocalDateTime start,
+            @DateTimeFormat(pattern = DATE_TIME_PATTERN) @RequestParam LocalDateTime end,
             @RequestParam (required = false) List<String> uris,
             @RequestParam (defaultValue = "false") Boolean unique
     ) {

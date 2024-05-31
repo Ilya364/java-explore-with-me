@@ -9,7 +9,6 @@ import ru.practicum.statistics.model.HitStatsMapper;
 import ru.practicum.statistics.repository.StatsRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,15 +24,12 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> getStats(String start, String end, List<String> uris, Boolean unique) {
-        LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
+    public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         List<Hit> hits;
         if (uris == null) {
-            hits = repository.findAllByTimestampBetween(startTime, endTime);
+            hits = repository.findAllByTimestampBetween(start, end);
         } else {
-            hits = repository.findAllByTimestampBetweenAndUriIn(startTime, endTime, uris);
+            hits = repository.findAllByTimestampBetweenAndUriIn(start, end, uris);
         }
         if (unique && !hits.isEmpty()) {
             hits = filterByUniqueIps(hits);
