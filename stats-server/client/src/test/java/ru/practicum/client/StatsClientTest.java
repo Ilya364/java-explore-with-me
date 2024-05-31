@@ -25,8 +25,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @SpringBootTest
 @RequiredArgsConstructor
 public class StatsClientTest {
-    private final String HOST = "http://localhost:";
-    private final String PORT = "9090";
+    private static final String HOST = "http://localhost:";
+    private static final String PORT = "9090";
     private final RestTemplate restTemplate = new RestTemplate();
     private final StatsClient client = new StatsClient(restTemplate);
     private final MockRestServiceServer mockStatsService = MockRestServiceServer.bindTo(restTemplate)
