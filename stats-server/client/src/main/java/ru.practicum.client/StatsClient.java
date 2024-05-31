@@ -17,13 +17,13 @@ import java.util.List;
 public class StatsClient {
     private final RestTemplate rest;
     //@Value("${datetime.pattern}")
-    private String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     //@Value("${stats.service.host}")
-    private final String HOST = "localhost";
+    private static final String HOST = "localhost";
     //@Value("${stats.service.port}")
-    private final String PORT = "9090";
-    private final String POST_HIT_PATH = "http://" + HOST + ":" + PORT + "/hit";
-    private final String GET_STATS_PATH = "http://" + HOST + ":" + PORT + "/stats";
+    private static final String PORT = "9090";
+    private static final String POST_HIT_PATH = "http://" + HOST + ":" + PORT + "/hit";
+    private static final String GET_STATS_PATH = "http://" + HOST + ":" + PORT + "/stats";
 
     public ResponseEntity<Object> postHit(
             String app, String uri, String ip, LocalDateTime timestamp
