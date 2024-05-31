@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatsController {
     private final StatsService statsService;
-    private final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 /*    @Autowired
     public StatsController(
