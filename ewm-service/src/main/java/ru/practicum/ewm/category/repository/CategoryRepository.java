@@ -6,5 +6,5 @@ import ru.practicum.ewm.category.model.Category;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    List<Category> findAllByIdBetween(Long from ,Long size);
+    List<Category> findAllByIdBetween(Long from, Long size);
 }

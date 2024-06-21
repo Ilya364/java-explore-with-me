@@ -10,6 +10,8 @@ import ru.practicum.ewm.event.dto.EventShortDto;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.model.EventState;
 import ru.practicum.ewm.event.repository.EventRepository;
+import ru.practicum.ewm.event.service.publ.search.PublicEventSearchCriteria;
+import ru.practicum.ewm.event.service.publ.search.PublicEventSpecification;
 
 import java.time.LocalDateTime;
 import java.util.List;

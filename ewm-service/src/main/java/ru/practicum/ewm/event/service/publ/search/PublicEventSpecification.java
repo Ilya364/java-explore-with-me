@@ -1,4 +1,4 @@
-package ru.practicum.ewm.event.service.publ;
+package ru.practicum.ewm.event.service.publ.search;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
