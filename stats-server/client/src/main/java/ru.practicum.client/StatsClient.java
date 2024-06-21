@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.dto.EndpointHit;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,11 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatsClient {
     private final RestTemplate rest;
-    //@Value("${datetime.pattern}")
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    //@Value("${stats.service.host}")
-    private static final String HOST = "localhost";
-    //@Value("${stats.service.port}")
+    private static final String HOST = "stats-service";
     private static final String PORT = "9090";
     private static final String POST_HIT_PATH = "http://" + HOST + ":" + PORT + "/hit";
     private static final String GET_STATS_PATH = "http://" + HOST + ":" + PORT + "/stats";
@@ -42,11 +40,11 @@ public class StatsClient {
 
     private EndpointHit buildEndpointHit(String app, String uri, String ip, LocalDateTime timestamp) {
         return EndpointHit.builder()
-            .app(app)
-            .uri(uri)
-            .ip(ip)
-            .hitTimestamp(timestamp)
-            .build();
+                .app(app)
+                .uri(uri)
+                .ip(ip)
+                .hitTimestamp(timestamp)
+                .build();
     }
 
     private String buildBody(EndpointHit endpointHit) throws JsonProcessingException {
