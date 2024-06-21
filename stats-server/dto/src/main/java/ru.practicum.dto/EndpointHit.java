@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class EndpointHit {
-    //@Value("${datetime.pattern}")
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private String ip;
     private String uri;
