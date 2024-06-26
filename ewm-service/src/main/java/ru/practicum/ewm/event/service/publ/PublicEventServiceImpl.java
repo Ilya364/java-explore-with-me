@@ -2,6 +2,7 @@ package ru.practicum.ewm.event.service.publ;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.error.exception.BadRequestException;
 import ru.practicum.ewm.error.exception.NotFoundException;
@@ -13,6 +14,8 @@ import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.event.service.publ.search.PublicEventSearchCriteria;
 import ru.practicum.ewm.event.service.publ.search.PublicEventSpecification;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +24,12 @@ import static ru.practicum.ewm.event.dto.EventDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository repository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<EventShortDto> getEvents(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                          LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, Integer from,
@@ -46,7 +51,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                         .sort(sort)
                         .build()
         );
-        events = limitSelection(repository.findAll(specification), from, size);
+        events = repository.findAll(specification, PageRequest.of(from / size, size)).toList();
         log.info("Events by user received.");
         return toEventShortDtoList(events);
     }
@@ -58,6 +63,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public EventFullDto getEvent(Long eventId) {
         Event event = repository.findById(eventId).orElseThrow(

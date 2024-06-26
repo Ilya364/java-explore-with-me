@@ -3,6 +3,7 @@ package ru.practicum.ewm.category.controller.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.category.dto.admin.NewCategoryDto;
 import ru.practicum.ewm.category.dto.publ.CategoryDto;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 @Slf4j
+@Validated
 @RequestMapping("/admin/categories")
 @RestController
 @RequiredArgsConstructor

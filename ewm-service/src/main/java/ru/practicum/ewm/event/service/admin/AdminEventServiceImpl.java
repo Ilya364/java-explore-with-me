@@ -2,6 +2,7 @@ package ru.practicum.ewm.event.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.error.exception.EventCantBeUpdatedException;
 import ru.practicum.ewm.error.exception.EventDateException;
@@ -14,6 +15,8 @@ import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.event.service.admin.search.AdminEventSearchCriteria;
 import ru.practicum.ewm.event.service.admin.search.AdminEventSpecification;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +25,12 @@ import static ru.practicum.ewm.event.dto.EventDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminEventServiceImpl implements AdminEventService {
     private final EventRepository repository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<EventFullDto> getEvents(
             List<Long> users, List<String> states, List<Long> categories,
@@ -40,9 +45,10 @@ public class AdminEventServiceImpl implements AdminEventService {
                         .rangeEnd(rangeEnd)
                         .build()
         );
-        List<EventFullDto> result = limitSelection(
-                toEventFullDtoList(repository.findAll(eventSpecification)), from, size
-        );
+        List<Event> events = repository.findAll(
+                eventSpecification, PageRequest.of(from / size, size)
+        ).toList();
+        List<EventFullDto> result = toEventFullDtoList(events);
         log.info("Events by admin received.");
         return result;
     }

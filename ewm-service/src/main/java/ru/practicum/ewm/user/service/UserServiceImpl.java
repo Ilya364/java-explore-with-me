@@ -11,17 +11,21 @@ import ru.practicum.ewm.user.dto.UserDto;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.repository.UserRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 import static ru.practicum.ewm.user.dto.UserDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> getUsers(List<Long> ids, Long from, Long size) {
         List<UserDto> users;
         if (ids != null) {

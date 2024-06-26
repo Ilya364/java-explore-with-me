@@ -2,6 +2,7 @@ package ru.practicum.ewm.category.controller.publ;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.category.dto.publ.CategoryDto;
 import ru.practicum.ewm.category.service.publ.PublicCategoryService;
@@ -11,6 +12,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RequestMapping("/categories")
 @RestController
 @RequiredArgsConstructor

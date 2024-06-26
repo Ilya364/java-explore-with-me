@@ -22,6 +22,8 @@ import ru.practicum.ewm.request.repository.EventRequestRepository;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.repository.UserRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ import static ru.practicum.ewm.request.dto.EventRequestDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PrivateEventServiceImpl implements PrivateEventService {
     private final EventRepository eventRepository;
@@ -37,6 +40,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private final EventRequestRepository eventRequestRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<EventShortDto> getCurrentUserEvents(Long userId, Long from, Long size) {
         List<Event> events = eventRepository.findAllByInitiator(userId, from, size);
@@ -62,6 +66,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public EventFullDto getCurrentUserEvent(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(
@@ -86,6 +91,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return toEventFullDto(event);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ParticipationRequestDto> getCurrentUserEventRequests(Long userId, Long eventId) {
         List<ParticipationRequestDto> requests = toParticipationRequestDtoList(
@@ -133,6 +139,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return buildRequestsStatusUpdateResult(requests);
     }
 
+    @Transactional(readOnly = true)
     private Event getEvent(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException(String.format("Event with id %d not found.", eventId))

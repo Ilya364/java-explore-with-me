@@ -15,6 +15,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RequestMapping("/admin/users")
 @RestController
 @RequiredArgsConstructor

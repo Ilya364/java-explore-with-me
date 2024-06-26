@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.compilation.dto.admin.NewCompilationDto;
 import ru.practicum.ewm.compilation.dto.admin.UpdateCompilationRequest;
 import ru.practicum.ewm.compilation.dto.publ.CompilationDto;
@@ -21,6 +22,7 @@ import static ru.practicum.ewm.compilation.dto.CompilationDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminCompilationServiceImpl implements AdminCompilationService {
     private final CompilationRepository compilationRepository;

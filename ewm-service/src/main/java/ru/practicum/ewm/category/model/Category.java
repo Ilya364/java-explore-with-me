@@ -1,6 +1,7 @@
 package ru.practicum.ewm.category.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Getter

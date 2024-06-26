@@ -15,6 +15,8 @@ import ru.practicum.ewm.request.repository.EventRequestRepository;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.repository.UserRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,12 +24,14 @@ import static ru.practicum.ewm.request.dto.EventRequestDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class EventRequestServiceImpl implements EventRequestService {
     private final EventRequestRepository requestRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<ParticipationRequestDto> getEventRequests(Long userId) {
         List<EventRequest> requests = requestRepository.findAllByRequesterId(userId);
@@ -75,6 +79,7 @@ public class EventRequestServiceImpl implements EventRequestService {
         }
     }
 
+    @Transactional(readOnly = true)
     private User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException(String.format("User %d not found.", userId))

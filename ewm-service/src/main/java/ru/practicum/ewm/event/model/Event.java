@@ -23,13 +23,13 @@ public class Event {
     private Long id;
     private String annotation;
     private String description;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
     @Column(name = "created_on")
     private LocalDateTime createdOn;
     @Column(name = "event_date")
     private LocalDateTime eventDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User initiator;
     @Embedded
     @AttributeOverride(name = "lat", column = @Column(name = "location_lat"))

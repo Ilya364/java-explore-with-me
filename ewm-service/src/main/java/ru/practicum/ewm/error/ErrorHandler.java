@@ -3,6 +3,7 @@ package ru.practicum.ewm.error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,7 +18,6 @@ import ru.practicum.ewm.event.controller.publ.PublicEventController;
 import ru.practicum.ewm.request.controller.EventRequestController;
 import ru.practicum.ewm.user.controller.UserController;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -27,21 +27,9 @@ import java.time.LocalDateTime;
         PublicEventController.class, EventRequestController.class, UserController.class
 })
 public class ErrorHandler {
-    @ExceptionHandler
+    @ExceptionHandler({BadRequestException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleBadRequestException(final BadRequestException e) {
-        log.info("Bad request: {}", e.getMessage());
-        return ApiError.builder()
-                .message("Bad request.")
-                .reason(e.getMessage())
-                .status(HttpStatus.BAD_REQUEST)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleValidationException(final ValidationException e) {
+    public ApiError handleBadRequestExceptions(final RuntimeException e) {
         log.info("Incorrectly made request: {}", e.getMessage());
         return ApiError.builder()
                 .message("Incorrectly made request.")
@@ -53,7 +41,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleValidationException(final MethodArgumentNotValidException e) {
+    public ApiError handleMissingParamException(final MissingServletRequestParameterException e) {
         log.info("Incorrectly made request: {}", e.getMessage());
         return ApiError.builder()
                 .message("Incorrectly made request.")
@@ -63,21 +51,23 @@ public class ErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleNotFoundException(final NotFoundException e) {
-        log.info("Object not found: {}", e.getMessage());
+        log.info("Not found: {}", e.getMessage());
         return ApiError.builder()
-                .message("Object not found.")
+                .message("Not found.")
                 .reason(e.getMessage())
                 .status(HttpStatus.NOT_FOUND)
                 .timestamp(LocalDateTime.now())
                 .build();
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({NotEmptyException.class, EventDateException.class, EventRequestNonWaitingStateException.class,
+            RequestForOwnEventException.class, RequestLimitReachedException.class, EventCantBeUpdatedException.class,
+            DuplicateException.class, NotOwnerException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleCategoryNotEmptyException(final NotEmptyException e) {
+    public ApiError handleConflictExceptions(final RuntimeException e) {
         log.info("For the requested operation the conditions are not met: {}", e.getMessage());
         return ApiError.builder()
                 .message("For the requested operation the conditions are not met.")
@@ -88,85 +78,13 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleEventDateException(final EventDateException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleThrowable(final Throwable e) {
+        log.info("Internal server error: {}", e.getMessage());
         return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
+                .message("Internal server error.")
                 .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleEventRequestNonWaitingStateException(final EventRequestNonWaitingStateException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleRequestForOwnEventException(final RequestForOwnEventException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleRequestLimitReachedException(final RequestLimitReachedException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleEventCantBeUpdated(final EventCantBeUpdatedException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleDuplicateRequestException(final DuplicateException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ApiError handleDuplicateRequestException(final NotOwnerException e) {
-        log.info("For the requested operation the conditions are not met: {}", e.getMessage());
-        return ApiError.builder()
-                .message("For the requested operation the conditions are not met.")
-                .reason(e.getMessage())
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .timestamp(LocalDateTime.now())
                 .build();
     }

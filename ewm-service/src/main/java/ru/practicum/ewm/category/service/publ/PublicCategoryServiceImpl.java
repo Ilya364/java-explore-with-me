@@ -8,16 +8,20 @@ import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
 import ru.practicum.ewm.error.exception.NotFoundException;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 import static ru.practicum.ewm.category.dto.CategoryDtoMapper.*;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PublicCategoryServiceImpl implements PublicCategoryService {
     private final CategoryRepository repository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<CategoryDto> getCategories(Long from, Long size) {
         List<CategoryDto> result = toCategoryDtoList(repository.findAllByIdBetween(from, from + size));
@@ -25,6 +29,7 @@ public class PublicCategoryServiceImpl implements PublicCategoryService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CategoryDto getCategory(Long id) {
         Category result = repository.findById(id).orElseThrow(
