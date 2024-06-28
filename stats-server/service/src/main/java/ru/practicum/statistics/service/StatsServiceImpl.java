@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.EndpointHit;
 import ru.practicum.dto.ViewStats;
+import ru.practicum.statistics.error.DateRangeException;
 import ru.practicum.statistics.model.Hit;
 import ru.practicum.statistics.model.HitStatsMapper;
 import ru.practicum.statistics.repository.StatsRepository;
@@ -26,6 +27,9 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         List<Hit> hits;
+        if (!end.isAfter(start)) {
+            throw new DateRangeException("End of range must be after start.");
+        }
         if (uris == null) {
             hits = repository.findAllByTimestampBetween(start, end);
         } else {
@@ -40,9 +44,9 @@ public class StatsServiceImpl implements StatsService {
 
     private List<Hit> filterByUniqueIps(List<Hit> hits) {
         return new ArrayList<>(
-            hits.stream()
-                .collect(Collectors.toMap(Hit::getIp, h -> h, (existing, replacement) -> existing))
-                .values()
+                hits.stream()
+                        .collect(Collectors.toMap(Hit::getIp, h -> h, (existing, replacement) -> existing))
+                        .values()
         );
     }
 
