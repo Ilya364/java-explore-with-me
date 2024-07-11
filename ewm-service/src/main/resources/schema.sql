@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS compilations_events;
 DROP TABLE IF EXISTS event_requests;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS compilations;
@@ -56,6 +57,17 @@ CREATE TABLE IF NOT EXISTS event_requests (
     CONSTRAINT fk_requests_to_events FOREIGN KEY (event_id) REFERENCES events (id),
     CONSTRAINT fk_requests_to_users FOREIGN KEY (requester_id) REFERENCES users (id),
     CONSTRAINT uq_id_initiator UNIQUE (event_id, requester_id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    event_id BIGINT,
+    created TIMESTAMP,
+    author_id BIGINT,
+    text VARCHAR(280),
+    CONSTRAINT fk_comments_to_events FOREIGN KEY (event_id) REFERENCES events (id),
+    CONSTRAINT fk_comments_to_users FOREIGN KEY (author_id) REFERENCES users (id),
+    CONSTRAINT uq_event_author_ids UNIQUE (event_id, author_id)
 );
 
 CREATE TABLE IF NOT EXISTS compilations_events (

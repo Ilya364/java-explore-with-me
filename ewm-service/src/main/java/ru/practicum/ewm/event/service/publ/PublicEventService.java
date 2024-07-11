@@ -1,5 +1,6 @@
 package ru.practicum.ewm.event.service.publ;
 
+import ru.practicum.ewm.comment.dto.CommentDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
 
@@ -20,4 +21,6 @@ public interface PublicEventService {
     );
 
     EventFullDto getEvent(Long eventId);
+
+    List<CommentDto> getCommentsByEvent(Long eventId);
 }

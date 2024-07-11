@@ -69,7 +69,7 @@ public class EventRequestServiceImpl implements EventRequestService {
 
     private void isRequestPossible(Long userId, Event event) {
         if (event.getInitiator().getId().equals(userId)) {
-            throw new RequestForOwnEventException("You cannot add a request to your own event");
+            throw new ImpossibleActionForOwnEventException("You cannot add a request to your own event");
         }
         if (event.getConfirmedRequests().equals(event.getParticipantsLimit()) && event.getParticipantsLimit() != 0) {
             throw new RequestLimitReachedException("Requests limit is reached.");
