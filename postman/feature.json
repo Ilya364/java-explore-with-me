@@ -16,7 +16,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"user 1 created = \", pm.response.json());"
+                  "console.log(\"user 1 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"user1\", pm.response.json().id);"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -57,7 +58,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"user 2 created = \", pm.response.json());"
+                  "console.log(\"user 2 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"user2\", pm.response.json().id);"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -98,7 +100,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"user 3 created = \", pm.response.json());"
+                  "console.log(\"user 3 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"userNotFound\", pm.response.json().id + 1);"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -139,7 +142,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"category 1 created = \", pm.response.json());"
+                  "console.log(\"category 1 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"category1\", pm.response.json().id);"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -180,7 +184,18 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"event 1 from user 1 created = \", pm.response.json());"
+                  "console.log(\"event 1 from user 1 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"event1\", pm.response.json().id);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -200,7 +215,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/events",
+              "raw": "http://localhost:8080/users/{{user1}}/events",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -208,7 +223,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "events"
               ]
             }
@@ -222,7 +237,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "console.log(\"event 2 from user 2 created = \", pm.response.json());"
+                  "console.log(\"event 2 from user 2 created = \", pm.response.json());\r",
+                  "pm.collectionVariables.set(\"event2\", pm.response.json().id);"
                 ],
                 "type": "text/javascript",
                 "packages": {}
@@ -242,7 +258,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/2/events",
+              "raw": "http://localhost:8080/users/{{user2}}/events",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -250,7 +266,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "2",
+                "{{user2}}",
                 "events"
               ]
             }
@@ -307,7 +323,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -315,13 +331,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user2}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -373,7 +389,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -381,13 +397,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user2}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -426,7 +442,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -434,13 +450,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user2}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -479,7 +495,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -487,13 +503,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user2}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -545,7 +561,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -553,7 +569,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -593,7 +609,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -601,7 +617,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -641,7 +657,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -649,7 +665,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -689,7 +705,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -697,7 +713,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -752,7 +768,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/4/comments?eventId=1",
+              "raw": "http://localhost:8080/users/1000/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -760,13 +776,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "4",
+                "1000",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -815,7 +831,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=3",
+              "raw": "http://localhost:8080/users/{{user1}}/comments?eventId=1000",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -823,13 +839,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "3"
+                  "value": "1000"
                 }
               ]
             }
@@ -859,7 +875,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -867,7 +883,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -917,7 +933,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments/1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -925,7 +941,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments",
                 "1"
               ]
@@ -970,7 +986,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/2/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -978,13 +994,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "2",
+                "{{user2}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -1023,7 +1039,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=2",
+              "raw": "http://localhost:8080/users/{{user1}}/comments?eventId={{event2}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1031,13 +1047,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "2"
+                  "value": "{{event2}}"
                 }
               ]
             }
@@ -1076,7 +1092,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/2/comments/1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1084,7 +1100,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "2",
+                "{{user2}}",
                 "comments",
                 "1"
               ]
@@ -1115,7 +1131,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/events/1/comments",
+              "raw": "http://localhost:8080/events/{{event1}}/comments",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1123,7 +1139,7 @@
               "port": "8080",
               "path": [
                 "events",
-                "1",
+                "{{event1}}",
                 "comments"
               ]
             }
@@ -1151,7 +1167,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/users/2/comments/1",
+              "raw": "http://localhost:8080/users/{{user2}}/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1159,7 +1175,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "2",
+                "{{user2}}",
                 "comments",
                 "1"
               ]
@@ -1204,7 +1220,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=1",
+              "raw": "http://localhost:8080/users/{{user1}}/comments?eventId={{event1}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1212,13 +1228,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "1"
+                  "value": "{{event1}}"
                 }
               ]
             }
@@ -1257,7 +1273,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/1/comments?eventId=2",
+              "raw": "http://localhost:8080/users/{{user1}}/comments?eventId={{event2}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1265,13 +1281,13 @@
               "port": "8080",
               "path": [
                 "users",
-                "1",
+                "{{user1}}",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
-                  "value": "2"
+                  "value": "{{event2}}"
                 }
               ]
             }
@@ -1310,7 +1326,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/3/comments/2",
+              "raw": "http://localhost:8080/users/{{user3}}/comments/2",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1318,7 +1334,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "3",
+                "{{user3}}",
                 "comments",
                 "2"
               ]
@@ -1349,7 +1365,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/users/3/comments/2",
+              "raw": "http://localhost:8080/users/{{user3}}/comments/2",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1357,7 +1373,7 @@
               "port": "8080",
               "path": [
                 "users",
-                "3",
+                "{{user3}}",
                 "comments",
                 "2"
               ]
@@ -1384,6 +1400,34 @@
     {
       "key": "eventId",
       "value": "1"
+    },
+    {
+      "key": "user1",
+      "value": "1"
+    },
+    {
+      "key": "user2",
+      "value": "2"
+    },
+    {
+      "key": "event1",
+      "value": "1"
+    },
+    {
+      "key": "user3",
+      "value": "3"
+    },
+    {
+      "key": "event2",
+      "value": "2"
+    },
+    {
+      "key": "category1",
+      "value": ""
+    },
+    {
+      "key": "userNotFound",
+      "value": ""
     }
   ]
 }
