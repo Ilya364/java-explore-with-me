@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewm.category.controller.admin.AdminCategoryController;
 import ru.practicum.ewm.category.controller.publ.PublicCategoryController;
+import ru.practicum.ewm.comment.controller.CommentController;
 import ru.practicum.ewm.compilation.controller.admin.AdminCompilationController;
 import ru.practicum.ewm.compilation.controller.publ.PublicCompilationController;
 import ru.practicum.ewm.error.exception.*;
@@ -24,7 +25,8 @@ import java.time.LocalDateTime;
 @RestControllerAdvice(assignableTypes = {
         AdminCategoryController.class, PublicCategoryController.class, AdminCompilationController.class,
         PublicCompilationController.class, AdminEventController.class, PrivateEventController.class,
-        PublicEventController.class, EventRequestController.class, UserController.class
+        PublicEventController.class, EventRequestController.class, UserController.class,
+        CommentController.class
 })
 public class ErrorHandler {
     @ExceptionHandler({BadRequestException.class, MethodArgumentNotValidException.class})
@@ -64,8 +66,9 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler({NotEmptyException.class, EventDateException.class, EventRequestNonWaitingStateException.class,
-            RequestForOwnEventException.class, RequestLimitReachedException.class, EventCantBeUpdatedException.class,
-            DuplicateException.class, NotOwnerException.class})
+            ImpossibleActionForOwnEventException.class, RequestLimitReachedException.class, EventCantBeUpdatedException.class,
+            DuplicateException.class, NotOwnerException.class, NonParticipantException.class,
+            CommentCantBeUpdatedException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleConflictExceptions(final RuntimeException e) {
         log.info("For the requested operation the conditions are not met: {}", e.getMessage());

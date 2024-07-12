@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.practicum.ewm.comment.dto.CommentDto;
+import ru.practicum.ewm.comment.dto.CommentDtoMapper;
+import ru.practicum.ewm.comment.repository.CommentRepository;
 import ru.practicum.ewm.error.exception.BadRequestException;
 import ru.practicum.ewm.error.exception.NotFoundException;
 import ru.practicum.ewm.event.dto.EventFullDto;
@@ -27,7 +30,8 @@ import static ru.practicum.ewm.event.dto.EventDtoMapper.*;
 @Transactional
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
-    private final EventRepository repository;
+    private final EventRepository eventRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -51,7 +55,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                         .sort(sort)
                         .build()
         );
-        events = repository.findAll(specification, PageRequest.of(from / size, size)).toList();
+        events = eventRepository.findAll(specification, PageRequest.of(from / size, size)).toList();
         log.info("Events by user received.");
         return toEventShortDtoList(events);
     }
@@ -66,7 +70,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     @Transactional(readOnly = true)
     @Override
     public EventFullDto getEvent(Long eventId) {
-        Event event = repository.findById(eventId).orElseThrow(
+        Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException(String.format("Event %d not found.", eventId))
         );
         if (!event.getState().equals(EventState.PUBLISHED)) {
@@ -75,5 +79,12 @@ public class PublicEventServiceImpl implements PublicEventService {
         event.setViews(event.getViews() + 1);
         log.info("Event {} received.", eventId);
         return toEventFullDto(event);
+    }
+
+    @Override
+    public List<CommentDto> getCommentsByEvent(Long eventId) {
+        List<CommentDto> result = CommentDtoMapper.toCommentDtoList(commentRepository.findAllByEventId(eventId));
+        log.info("Comments by event {} received.", eventId);
+        return result;
     }
 }

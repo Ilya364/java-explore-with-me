@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.client.StatsClient;
+import ru.practicum.ewm.comment.dto.CommentDto;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
 import ru.practicum.ewm.event.service.publ.PublicEventService;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class PublicEventController {
-    private final PublicEventService service;
+    private final PublicEventService publicEventService;
     private final StatsClient statsClient = new StatsClient(new RestTemplate());
 
     @GetMapping
@@ -43,9 +44,9 @@ public class PublicEventController {
             @Positive @RequestParam(defaultValue = "10") Integer size,
             HttpServletRequest request
     ) throws JsonProcessingException {
-        log.info("Request to get events by user.");
+        log.info("Request to receive events by user.");
         statsClient.postHit("explore-with-me", "/events", request.getRemoteAddr(), LocalDateTime.now());
-        return service.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        return publicEventService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
 
     @GetMapping("/{eventId}")
@@ -53,8 +54,16 @@ public class PublicEventController {
             @Positive @PathVariable Long eventId,
             HttpServletRequest request
     ) throws JsonProcessingException {
-        log.info("Request to get event {} by user.", eventId);
+        log.info("Request to receive event {} by user.", eventId);
         statsClient.postHit("explore-with-me", "/events/" + eventId, request.getRemoteAddr(), LocalDateTime.now());
-        return service.getEvent(eventId);
+        return publicEventService.getEvent(eventId);
+    }
+
+    @GetMapping("/{eventId}/comments")
+    public List<CommentDto> getCommentsByEvent(
+            @Positive @PathVariable Long eventId
+    ) {
+        log.info("Request to receive comments of event {} by user.", eventId);
+        return publicEventService.getCommentsByEvent(eventId);
     }
 }
