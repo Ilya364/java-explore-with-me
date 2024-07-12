@@ -11,6 +11,18 @@
       "item": [
         {
           "name": "Создать пользователя 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"user 1 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -40,6 +52,18 @@
         },
         {
           "name": "Создать пользователя 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"user 2 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -69,6 +93,18 @@
         },
         {
           "name": "Создать пользователя 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"user 3 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -98,6 +134,18 @@
         },
         {
           "name": "Создать категорию 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"category 1 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -127,6 +175,18 @@
         },
         {
           "name": "Создать событие 1 от пользователя 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"event 1 from user 1 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -157,6 +217,18 @@
         },
         {
           "name": "Создать событие 2 от пользователя 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "console.log(\"event 2 from user 2 created = \", pm.response.json());"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
@@ -211,6 +283,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to create null comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -266,6 +339,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to create empty comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -331,6 +405,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to create blank comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -383,6 +458,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to create big comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -445,6 +521,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to update empty comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -495,6 +572,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to update null comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -542,6 +620,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to update blank comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -589,6 +668,7 @@
                   "    pm.response.to.be.badRequest;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to update big comment = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -609,7 +689,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/:{{userId}}/comments/:{{commentId}}",
+              "raw": "http://localhost:8080/users/1/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -617,19 +697,9 @@
               "port": "8080",
               "path": [
                 "users",
-                ":{{userId}}",
+                "1",
                 "comments",
-                ":{{commentId}}"
-              ],
-              "variable": [
-                {
-                  "key": "{{userId}}",
-                  "value": "1"
-                },
-                {
-                  "key": "{{commentId}}",
-                  "value": "1"
-                }
+                "1"
               ]
             }
           },
@@ -651,7 +721,7 @@
                   "    pm.response.to.have.status(404);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"was an attempt to create comment by user not found = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -724,7 +794,7 @@
                   "    pm.response.to.have.status(404);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"was an attempt to create comment by event not found = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -777,7 +847,7 @@
                   "    pm.response.to.have.status(404);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"was an attempt to delet comment not found = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -816,7 +886,7 @@
                   "    pm.response.to.have.status(404);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"was an attempt to update comment not found = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -847,7 +917,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/:{{userId}}/comments/:{{commentId}}",
+              "raw": "http://localhost:8080/users/1/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -855,19 +925,9 @@
               "port": "8080",
               "path": [
                 "users",
-                ":{{userId}}",
+                "1",
                 "comments",
-                ":{{commentId}}"
-              ],
-              "variable": [
-                {
-                  "key": "{{userId}}",
-                  "value": "1"
-                },
-                {
-                  "key": "{{commentId}}",
-                  "value": "1"
-                }
+                "1"
               ]
             }
           },
@@ -889,7 +949,7 @@
                   "    pm.response.to.have.status(201);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"comment 1 created by user 2 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -910,7 +970,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/:{{userId}}/comments?eventId=1",
+              "raw": "http://localhost:8080/users/2/comments?eventId=1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -918,19 +978,13 @@
               "port": "8080",
               "path": [
                 "users",
-                ":{{userId}}",
+                "2",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
                   "value": "1"
-                }
-              ],
-              "variable": [
-                {
-                  "key": "{{userId}}",
-                  "value": "2"
                 }
               ]
             }
@@ -948,6 +1002,7 @@
                   "    pm.response.to.have.status(201);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"comment 2 created by user 1 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -968,7 +1023,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/:{{userId}}/comments?eventId=2",
+              "raw": "http://localhost:8080/users/1/comments?eventId=2",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -976,19 +1031,13 @@
               "port": "8080",
               "path": [
                 "users",
-                ":{{userId}}",
+                "1",
                 "comments"
               ],
               "query": [
                 {
                   "key": "eventId",
                   "value": "2"
-                }
-              ],
-              "variable": [
-                {
-                  "key": "{{userId}}",
-                  "value": "1"
                 }
               ]
             }
@@ -1006,7 +1055,7 @@
                   "    pm.response.to.have.status(200);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"comment 1 updated by user 2 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1027,7 +1076,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/users/:{{userId}}/comments/:{{commentId}}",
+              "raw": "http://localhost:8080/users/2/comments/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1035,19 +1084,9 @@
               "port": "8080",
               "path": [
                 "users",
-                ":{{userId}}",
+                "2",
                 "comments",
-                ":{{commentId}}"
-              ],
-              "variable": [
-                {
-                  "key": "{{userId}}",
-                  "value": "2"
-                },
-                {
-                  "key": "{{commentId}}",
-                  "value": "1"
-                }
+                "1"
               ]
             }
           },
@@ -1064,6 +1103,7 @@
                   "    pm.response.to.have.status(200);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"comments by event 1 received = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1075,7 +1115,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/events/:{{eventId}}/comments",
+              "raw": "http://localhost:8080/events/1/comments",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1083,14 +1123,8 @@
               "port": "8080",
               "path": [
                 "events",
-                ":{{eventId}}",
+                "1",
                 "comments"
-              ],
-              "variable": [
-                {
-                  "key": "{{eventId}}",
-                  "value": "1"
-                }
               ]
             }
           },
@@ -1105,7 +1139,7 @@
                 "exec": [
                   "pm.test(\"Ответ должен содержать код статуса 204 и данные в формате json\", function () {\r",
                   "    pm.response.to.have.status(204);\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"comment 1 deleted by user 2 = \");\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1149,7 +1183,7 @@
                   "    pm.response.to.have.status(409);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "    console.log(\"target = \" = pm.response.json());\r",
+                  "    console.log(\"was an attempt to create comment for own event 1 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1202,6 +1236,7 @@
                   "    pm.response.to.have.status(409);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to create duplicate comment to event 2 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1254,6 +1289,7 @@
                   "    pm.response.to.have.status(409);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to update comment 2 by user 3 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1301,6 +1337,7 @@
                   "    pm.response.to.have.status(409);\r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
+                  "    console.log(\"was an attempt to delete comment 2 by user 3 = \", pm.response.json());\r",
                   "});"
                 ],
                 "type": "text/javascript",
